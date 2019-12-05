@@ -1,5 +1,13 @@
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
+
+const db = require('../config/keys').mongoURI
+
+mongoose
+    .connect(db)
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log(err))
 
 const students = [
     { id: "28-09121", name: "Omar Sherif", github_username: "osheriff", email: "omarr@whatever.com" },
