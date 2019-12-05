@@ -12,7 +12,7 @@ const existingUserSchema = new Schema({
      type: String
     },
    inputCalories: {
-       type: number
+       type: Number
    }
    })
 

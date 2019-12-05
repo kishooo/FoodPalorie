@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 
 const db = require('../config/keys').mongoURI
 
+const users=require('../routes/user')
+
+app.use('/user',users)
+
 mongoose
     .connect(db)
     .then(() => console.log('Connected to MongoDB'))

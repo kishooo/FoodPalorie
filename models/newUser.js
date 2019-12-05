@@ -15,9 +15,9 @@ const newUserSchema = new Schema({
         type: String
    },
    inputCalories: {
-       type: number
+       type: Number
    }
    })
 
    
-module.exports = User=mongoose.model('users', newUserSchema)
+module.exports = User = mongoose.model('newUser', newUserSchema)
