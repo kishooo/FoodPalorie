@@ -10,6 +10,7 @@ app.set('view engine','ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 var calorie=0;
+var remcalorie=2500;
 
 
 app.post("/",function(req,res){
@@ -32,7 +33,8 @@ app.post("/",function(req,res){
   	if (error) throw new Error(error);
     var data = JSON.parse(body);
     calorie=data.hints[0].food.nutrients.ENERC_KCAL;
-    res.render("list",{calorie:calorie});
+    remcalorie=remcalorie-calorie;
+    res.render("list",{calorie:remcalorie});
   	console.log(calorie);
     console.log(req.body.text);
   });
@@ -46,7 +48,7 @@ app.post("/",function(req,res){
 });
 app.get("/",function(req,res){
   //res.sendFile(__dirname + "/index.html");
-
+  res.render("list",{calorie:remcalorie});
 });
 const port = 3000;
 app.listen(port, () => console.log(`Listening on port ${port}`));
