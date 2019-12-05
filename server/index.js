@@ -1,37 +1,54 @@
 const express = require('express');
+//const app = express();
+
+const bodyParser = require("body-parser");
+const request = require("request");
+//let ejs = require('ejs');
+
 const app = express();
+app.set('view engine','ejs');
 
-const students = [
-    { id: "28-09121", name: "Omar Sherif", github_username: "osheriff", email: "omarr@whatever.com" },
-    { id: "21-094123", name: "Mathew White", github_username: "matheww", email: "matheww@whatever.com" },
-    { id: "15-10312", name: "Dom Sundle", github_username: "domss", email: "domss.whatever.com" },
-    { id: "7223", name: "Gehad Ismail", github_username: "Gehad93", email: "gehad.ismail@guc.edu.eg" }
-];
+app.use(bodyParser.urlencoded({extended: true}));
+var calorie=0;
+var remcalorie=2500;
 
-app.get('/', (request, response) => {
-    response.send(`<a href="/api/students">Students</a>`);
+
+app.post("/",function(req,res){
+  //console.log(req.body.crypto);
+  //request("https://api.edamam.com/api/nutrition-details?app_id=${2f52c44d}&app_key=${8daf27f1bf6697d99ddf0223cac7971c}&ingr=1%20large%20apple",function(error,response,body){
+  //var request = require("request");
+  var request = require("request");
+  var search=req.body.text;
+  var options = {
+    method: 'GET',
+    url: 'https://edamam-food-and-grocery-database.p.rapidapi.com/parser',
+    qs: {ingr: ''+search},
+    headers: {
+      'x-rapidapi-host': 'edamam-food-and-grocery-database.p.rapidapi.com',
+      'x-rapidapi-key': '4af14b1073msh8bfd6338eaa312ep1c0a4djsn8a2c33dea702'
+    }
+  };
+
+  request(options, function (error, response, body) {
+  	if (error) throw new Error(error);
+    var data = JSON.parse(body);
+    calorie=data.hints[0].food.nutrients.ENERC_KCAL;
+    remcalorie=remcalorie-calorie;
+    res.render("list",{calorie:remcalorie});
+  	console.log(calorie);
+    console.log(req.body.text);
+  });
+
+
+    //console.log(response);
+    //var data = JSON.parse(body);
+    // var price =data.results[0].health;
+
+    //console.log(price);
 });
-
-app.get('/api/students', (request, response) => {
-    let data = "";
-    students.forEach((value) => {
-        const user_id = value.id;
-        const user_name = value.name;
-        data += `<a href="/api/students/${user_id}">${user_name}</a><br>`;
-    });
-    response.send(data);
+app.get("/",function(req,res){
+  //res.sendFile(__dirname + "/index.html");
+  res.render("list",{calorie:remcalorie});
 });
-
-app.get('/api/students/:id', (request, response) => {
-    var data = "";
-    students.forEach((value) => {
-        if(value.id === request.params.id) {
-            data = `Id: ${value.id}<br>Name: ${value.name}<br>Email: ${value.email}<br>Github: ${value.github_username}`;
-            return;
-        }
-    });
-    response.send(data || 'No student matches the requested id');
-});
-
 const port = 3000;
 app.listen(port, () => console.log(`Listening on port ${port}`));
