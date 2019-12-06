@@ -59,7 +59,8 @@ app.post("/calorie",function(req,res){
          //error="cannot find";
 
          console.log("cannot find");
-         res.sendFile(__dirname + "/error.html")
+         res.render("error",{data:req.body.text});
+         //res.sendFile(__dirname + "/error.html")
          //res.redirect("/calorie");
          //alert("cannot find");
          //break;
