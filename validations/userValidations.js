@@ -4,7 +4,7 @@ const {StringExtensions} = require('@joi-extensions/joi-extensions')
 const Joi = BaseJoi.extend(StringExtensions)
 
 module.exports = {
-    createPartnerValidation: request => {
+    registerValidation: request => {
         const createSchema = {
             email:Joi.string().email().required(),
             password:Joi.string().min(3).max(500).required(),
