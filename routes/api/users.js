@@ -5,7 +5,10 @@ const router = express.Router()
 const User = require('../../models/User')
 const validator = require('../../validations/userValidations')
 
-router.get('/', (req,res) => res.json({data: 'Users working'}))
+router.get('/', async (req,res) => {
+    const user = await User.find()
+    res.json({data: user})
+})
 
 router.post('/register', async (req,res) => {
     try {
