@@ -40,16 +40,17 @@ router.post('/register', async (req,res) => {
     }  
  })
 
- router.get('/login', async (req,res) => {
+  router.put('/addFood', async (req,res) => {
     try {
      const isValidated = validator.loginValidation(req.body)
      if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
      const userName = req.body.userName
      const password = req.body.password
+     const food = [req.body.food]
      const user = await User.findOne({userName})
      if(user.password != password) return res.status(400).json({error: 'wrong password'})
-     const newUser = await User.findOne({userName})
-     res.json({msg:'login successful', data: newUser})
+     const updatedUser = await User.updateOne({food})
+     res.json({msg:'food added successfully', data: updatedUser})
     }
     catch(error) {
         // We will be handling the error later
