@@ -3,22 +3,25 @@ const Schema = mongoose.Schema
 
 // Create the schema
 const UserSchema = new Schema({
-    name: {
+    userName: {
         type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
+        required: true,
+        unique:true
     },
     password: {
         type: String,
         required: true
     },
-    age: {
+    caloriesNeeded: {
         type: Number,
-        required: true
-    }
+        required: false
+    },
+    food:[
+        {
+            foodName: String,
+            date: String,
+            calories: Number
+    }      ]
 })
 
 module.exports = User = mongoose.model('users', UserSchema)
