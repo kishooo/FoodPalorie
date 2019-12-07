@@ -36,7 +36,7 @@ var error="";
 app.use('/api/users', users)
 app.use('/api/foods', foods)
 
-app.use((req,res) => res.status(404).send(`<h1>Can not find what you're looking for</h1>`))
+//app.use((req,res) => res.status(404).send(`<h1>Can not find what you're looking for</h1>`))
 
 app.get("/",function(req,res){
   res.sendFile(__dirname + "/index.html");
