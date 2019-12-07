@@ -1,17 +1,42 @@
 const express = require('express');
+const mongoose = require('mongoose')
 //const app = express();
+
+
 
 const bodyParser = require("body-parser");
 const request = require("request");
 //let ejs = require('ejs');
 
+// routes
+const users = require('./routes/api/users')
+const foods = require('./routes/api/foods')
+
 const app = express();
 app.set('view engine','ejs');
 
+// DB Config
+const db = require('./config/keys').mongoURI
+
+// Connect to mongo
+mongoose
+    .connect(db, { useUnifiedTopology: true ,useNewUrlParser: true})
+    .then(() => console.log('Connected to MongoDB'))
+    .catch(err => console.log(err))
+
+// Init middleware
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 app.use(bodyParser.urlencoded({extended: true}));
 var calorie=0;
 var remcalorie=2500;
 var error="";
+
+// Direct to Route Handlers
+app.use('/api/users', users)
+app.use('/api/foods', foods)
+
+app.use((req,res) => res.status(404).send(`<h1>Can not find what you're looking for</h1>`))
 
 app.get("/",function(req,res){
   res.sendFile(__dirname + "/index.html");
@@ -65,17 +90,8 @@ app.post("/calorie",function(req,res){
          //alert("cannot find");
          //break;
       }
-
-
-
-
-
-
   }
   });
-
-
-
     //console.log(response);
     //var data = JSON.parse(body);
     // var price =data.results[0].health;
@@ -87,4 +103,5 @@ app.get("/calorie",function(req,res){
   res.render("list",{calorie:remcalorie});
 });
 const port = 3000;
+//const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Listening on port ${port}`));
