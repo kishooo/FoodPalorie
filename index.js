@@ -6,6 +6,7 @@ const users = require('./routes/api/users')
 const books = require('./routes/api/books')
 const profiles = require('./routes/api/profiles')
 const comments = require('./routes/api/comments')
+const foods = require('./routes/api/foods')
 
 const app = express()
 
@@ -30,6 +31,7 @@ app.get('/test', (req,res) => res.send(`<h1>Deployed on Heroku</h1>`))
 // Direct to Route Handlers
 app.use('/api/users', users)
 app.use('/api/books', books)
+app.use('/api/foods', foods)
 app.use('/api/profiles', profiles)
 app.use('/api/comments', comments)
 

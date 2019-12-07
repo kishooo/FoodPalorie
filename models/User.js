@@ -16,12 +16,7 @@ const UserSchema = new Schema({
         type: Number,
         required: false
     },
-    food:[
-        {
-            foodName: String,
-            date: String,
-            calories: Number
-    }      ]
+
 })
 
 module.exports = User = mongoose.model('users', UserSchema)
