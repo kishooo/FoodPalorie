@@ -40,7 +40,7 @@ router.post('/register', async (req,res) => {
     }  
  })
 
-  router.put('/addFood', async (req,res) => {
+ /* router.put('/addFood', async (req,res) => {
     try {
      const isValidated = validator.loginValidation(req.body)
      if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
@@ -57,6 +57,7 @@ router.post('/register', async (req,res) => {
         console.log(error)
     }  
  })
+ */
 /*
 router.post('/register', async (req,res) => {
     const isValidated = validator.createValidation(req.body)

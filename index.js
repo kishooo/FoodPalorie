@@ -3,9 +3,9 @@ const mongoose = require('mongoose')
 
 // Require Router Handlers
 const users = require('./routes/api/users')
-const books = require('./routes/api/books')
-const profiles = require('./routes/api/profiles')
-const comments = require('./routes/api/comments')
+//const books = require('./routes/api/books')
+//const profiles = require('./routes/api/profiles')
+//const comments = require('./routes/api/comments')
 const foods = require('./routes/api/foods')
 
 const app = express()
@@ -25,15 +25,15 @@ app.use(express.urlencoded({extended: false}))
 
 
 // Entry point
-app.get('/', (req,res) => res.send(`<h1>Book Store</h1>`))
+app.get('/', (req,res) => res.send(`<h1>Temporary</h1>`))
 app.get('/test', (req,res) => res.send(`<h1>Deployed on Heroku</h1>`))
 
 // Direct to Route Handlers
 app.use('/api/users', users)
-app.use('/api/books', books)
+//app.use('/api/books', books)
 app.use('/api/foods', foods)
-app.use('/api/profiles', profiles)
-app.use('/api/comments', comments)
+//app.use('/api/profiles', profiles)
+//app.use('/api/comments', comments)
 
 
 app.use((req,res) => res.status(404).send(`<h1>Can not find what you're looking for</h1>`))

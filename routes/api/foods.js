@@ -12,7 +12,7 @@ router.post('/', async (req,res) => {
      const isValidated = validator.createValidation(req.body)
      if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
      const newFood = await Food.create(req.body)
-     res.json({msg:'food was created successfully', data: newFood})
+     res.json({msg:'Food created successfully', data: newFood})
     }
     catch(error) {
         // We will be handling the error later
@@ -20,6 +20,21 @@ router.post('/', async (req,res) => {
     }  
  })
 
+
+ router.get('/getIdDate', async (req,res) => {
+    try {
+     const user_id = req.body.user_id
+     const date = req.body.date
+     const food = await Food.find({user_id, date})
+     res.json({data: food})
+    }
+    catch(error) {
+        // We will be handling the error later
+        console.log(error)
+    }  
+ })
+
+ /*
  router.get('/getByUser_id', async (req,res) => {
     try {
      const user_id = req.body.id
@@ -31,17 +46,6 @@ router.post('/', async (req,res) => {
         console.log(error)
     }  
  })
+ */
 
- router.get('/getIdDate', async (req,res) => {
-    try {
-     const user_id = req.body.user_id
-     const date = req.body.date
-     const food = await Food.find({user_id, date})
-     res.json({msg:'food was created successfully', data: food})
-    }
-    catch(error) {
-        // We will be handling the error later
-        console.log(error)
-    }  
- })
  module.exports = router
