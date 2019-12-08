@@ -5,11 +5,27 @@ const router = express.Router()
 const User = require('../../models/User')
 const validator = require('../../validations/userValidations')
 
+// Get all users
 router.get('/', async (req,res) => {
     const user = await User.find()
     res.json({data: user})
 })
 
+// Get user by ID
+router.get('/:id', async(req,res) => {
+    try {
+        const id = req.params.id
+        const member = await User.findById(id)
+        if(!member) return res.status(404).send({error: 'Member does not exist'})
+        res.json({msg: 'Member found successfully', data: member})
+       }
+       catch(error) {
+           // We will be handling the error later
+           console.log(error)
+       } 
+})
+
+// Create user
 router.post('/register', async (req,res) => {
     try {
      const isValidated = validator.createValidation(req.body)
@@ -26,6 +42,7 @@ router.post('/register', async (req,res) => {
     }
  })
 
+ // ???
  router.get('/login', async (req,res) => {
     try {
      const isValidated = validator.loginValidation(req.body)
