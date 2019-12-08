@@ -117,10 +117,14 @@ app.post("/register",async (req,res) => {
        console.log(error);
   }
 });
+app.get("/login",function(req,res){
+  res.sendFile(__dirname+"/login.html");
+})
 app.get("/calorie",function(req,res){
   //res.sendFile(__dirname + "/index.html");
   res.render("list",{calorie:remcalorie});
 });
+app.post()
 const port = 3000;
 //const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`Listening on port ${port}`));
