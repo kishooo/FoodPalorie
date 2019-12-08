@@ -1,5 +1,6 @@
 const express = require('express');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const axios = require('axios');
 //const app = express();
 
 
@@ -97,6 +98,24 @@ app.post("/calorie",function(req,res){
     // var price =data.results[0].health;
 
     //console.log(price);
+});
+app.get("/register",function(req,res){
+  res.sendFile(__dirname + "/register.html");
+});
+
+app.post("/register",async (req,res) => {
+
+  const user = {
+  "userName":req.body.userName,
+  "password":req.body.password,
+  "caloriesNeeded": req.body.caloriesNeeded
+  };
+  var myJSON = JSON.stringify(user);
+  try {
+        await axios.post('http://localhost:3000/api/users/register',user);
+     } catch(error) {
+       console.log(error);
+  }
 });
 app.get("/calorie",function(req,res){
   //res.sendFile(__dirname + "/index.html");

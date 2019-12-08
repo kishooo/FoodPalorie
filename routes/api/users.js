@@ -23,7 +23,7 @@ router.post('/register', async (req,res) => {
     catch(error) {
         // We will be handling the error later
         console.log(error)
-    }  
+    }
  })
 
  router.get('/login', async (req,res) => {
@@ -40,7 +40,7 @@ router.post('/register', async (req,res) => {
     catch(error) {
         // We will be handling the error later
         console.log(error)
-    }  
+    }
  })
 
  /* router.put('/addFood', async (req,res) => {
@@ -58,7 +58,7 @@ router.post('/register', async (req,res) => {
     catch(error) {
         // We will be handling the error later
         console.log(error)
-    }  
+    }
  })
  */
 /*
