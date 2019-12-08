@@ -103,7 +103,7 @@ app.get("/register",function(req,res){
   res.sendFile(__dirname + "/register.html");
 });
 
-app.post("/register",async (req,res) => {
+app.post("/register",async function(req,res) {
 
   const user = {
   "userName":req.body.userName,
