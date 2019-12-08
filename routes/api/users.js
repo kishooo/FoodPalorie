@@ -25,6 +25,20 @@ router.get('/:id', async(req,res) => {
        } 
 })
 
+// Get user calories by ID
+router.get('/calorie/:id', async(req,res) => {
+    try {
+        const id = req.params.id
+        const member = await User.findById(id)
+        if(!member) return res.status(404).send({error: 'Member does not exist'})
+        res.json({caloriesNeeded: member.caloriesNeeded})
+       }
+       catch(error) {
+           // We will be handling the error later
+           console.log(error)
+       } 
+})
+
 // Create user
 router.post('/register', async (req,res) => {
     try {
