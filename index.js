@@ -46,9 +46,6 @@ app.get("/",function(req,res){
 
 
 app.post("/calorie",function(req,res){
-  //console.log(req.body.crypto);
-  //request("https://api.edamam.com/api/nutrition-details?app_id=${2f52c44d}&app_key=${8daf27f1bf6697d99ddf0223cac7971c}&ingr=1%20large%20apple",function(error,response,body){
-  //var request = require("request");
   var request = require("request");
   var search=req.body.text;
   var options = {
@@ -64,19 +61,16 @@ app.post("/calorie",function(req,res){
   request(options, function (error, response, body) {
     var data = JSON.parse(body);
     if (error){
-    //alert("cannot found");
       throw new Error(error);
     }
     else{
     try {
-        //res.render("list",{error:error});
       calorie=data.hints[0].food.nutrients.ENERC_KCAL;
-         // Code to run
+
          remcalorie=remcalorie-calorie;
          res.render("list",{calorie:remcalorie});
        	console.log(calorie);
          console.log(req.body.text);
-         //break;
       }
 
       catch (e) {
@@ -86,10 +80,6 @@ app.post("/calorie",function(req,res){
 
          console.log("cannot find");
          res.render("error",{data:req.body.text});
-         //res.sendFile(__dirname + "/error.html")
-         //res.redirect("/calorie");
-         //alert("cannot find");
-         //break;
       }
   }
   });
@@ -112,11 +102,39 @@ app.post("/register",async function(req,res) {
   };
   var myJSON = JSON.stringify(user);
   try {
-        await axios.post('http://localhost:3000/api/users/register',user);
+        await axios.post('http://localhost:3000/api/users/register',user).then(res => {
+          res.data.msg == 'user was created successfully' ?alert("user created") : console.log("error")
+           //console.log("check point");
+       })
+
      } catch(error) {
        console.log(error);
   }
+
 });
+// function response(res){
+//   if(res.msg=="user was created successfully"){
+//     //res.redirect("/");
+//    console.log("user was created");
+// }
+app.get("/login",async function(req,res) {
+  const user = {
+  "userName":req.body.userName,
+  "password":req.body.password,
+  //"caloriesNeeded": req.body.caloriesNeeded
+  };
+  var myJSON = JSON.stringify(user);
+  try {
+        await axios.get('http://localhost:3000/api/users/login',user).then(res => {
+          res.data.msg == 'Member found successfully' ?console.log("login successfully") : console.log("error")
+           //console.log("check point");
+       })
+
+     } catch(error) {
+       console.log(error);
+  }
+})
+
 app.get("/login",function(req,res){
   res.sendFile(__dirname+"/login.html");
 })
