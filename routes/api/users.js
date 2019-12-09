@@ -57,8 +57,8 @@ router.post('/register', async (req,res) => {
         console.log(error)
     }  
  })
- */
-/*
+ 
+
 router.post('/register', async (req,res) => {
     const isValidated = validator.createValidation(req.body)
     const { email, password, caloriesNeeded, food:[{foodName, date, calories}] }  = req.body
