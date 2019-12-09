@@ -1,0 +1,10 @@
+version: "2"
+services:
+  server:
+    container_name: Server
+    ports:
+      - "80:80"
+    command: node index.js
+    networks:
+      - webappnetwork
+      
