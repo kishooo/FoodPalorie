@@ -16,6 +16,7 @@ const foods = require('./routes/api/foods')
 const app = express();
 app.use(express.static("public"));
 app.set('view engine','ejs');
+
 // DB Config
 const db = require('./config/keys').mongoURI
 
@@ -29,10 +30,14 @@ mongoose
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(express.static("public"));
 var calorie=0;
 var remcalorie=2500;
 var error="";
 var flag=0;
+var falglogin=0;
+var id="";
+//var myData='';
 // Direct to Route Handlers
 app.use('/api/users', users)
 app.use('/api/foods', foods)
@@ -47,48 +52,7 @@ app.get("/",function(req,res){
 });
 
 
-app.post("/calorie",function(req,res){
-  var request = require("request");
-  var search=req.body.text;
-  var options = {
-    method: 'GET',
-    url: 'https://edamam-food-and-grocery-database.p.rapidapi.com/parser',
-    qs: {ingr: ''+search},
-    headers: {
-      'x-rapidapi-host': 'edamam-food-and-grocery-database.p.rapidapi.com',
-      'x-rapidapi-key': '4af14b1073msh8bfd6338eaa312ep1c0a4djsn8a2c33dea702'
-    }
-  };
 
-  request(options, function (error, response, body) {
-    var data = JSON.parse(body);
-    if (error){
-      throw new Error(error);
-    }
-    else{
-    try {
-      calorie=data.hints[0].food.nutrients.ENERC_KCAL;
-         remcalorie=remcalorie-calorie;
-         res.render("list",{calorie:remcalorie});
-       	console.log(calorie);
-         console.log(req.body.text);
-      }
-
-      catch (e) {
-         // Code to run if an exception occurs
-         //
-         //error="cannot find";
-
-         console.log("cannot find");
-         res.render("error",{data:req.body.text});
-      }
-  }
-  });
-    //console.log(response);
-    //var data = JSON.parse(body);
-    // var price =data.results[0].health;
-    //console.log(price);
-});
 app.get("/register",function(req,res){
   res.sendFile(__dirname + "/register.html");
 });
@@ -135,8 +99,8 @@ app.post("/login",async function(req,res) {
   };
   var myJSON = JSON.stringify(user);
   try {
-        await axios.get('http://localhost:3000/api/users/login',user).then(res => {
-          res.data.msg == 'Member found successfully' ? axios.get('http://localhost:3000/calorie'): console.log("error")
+        await axios.post('http://localhost:3000/api/users/login',user).then(res => {
+          res.data.msg == 'login successful' ?/*flogin=1: flogin=0*/myData = res.data:myData=''
           // if(res.data.msg == 'Member found successfully'){
           //   console.log("login successfully");
           // }else{
@@ -147,16 +111,71 @@ app.post("/login",async function(req,res) {
        })
 
      } catch(error) {
-       console.log(error);
-  }
-})
+       //flogin=0;
+       myData='';
+     }
+     console.log(myData);
+  if(myData!=""){
+    id=myData.data._id;
+    remcalorie = myData.data.caloriesNeeded;
+    console.log(remcalorie);
+    res.redirect("/calorie" /*+ myData.data._id*/);
 
+  //   //console.log(res.data);
+   }else{
+    res.write("<h1>password or username incorrect</h1>");
+   }
+})
+app.post("/calorie",function(req,res){
+
+  var request = require("request");
+  var search=req.body.text;
+  var options = {
+    method: 'GET',
+    url: 'https://edamam-food-and-grocery-database.p.rapidapi.com/parser',
+    qs: {ingr: ''+search},
+    headers: {
+      'x-rapidapi-host': 'edamam-food-and-grocery-database.p.rapidapi.com',
+      'x-rapidapi-key': '4af14b1073msh8bfd6338eaa312ep1c0a4djsn8a2c33dea702'
+    }
+  };
+
+  request(options, function (error, response, body) {
+    var data = JSON.parse(body);
+    if (error){
+      throw new Error(error);
+    }
+    else{
+    try {
+      calorie=data.hints[0].food.nutrients.ENERC_KCAL;
+         remcalorie=remcalorie-calorie;
+         res.render("list",{calorie:remcalorie});
+       	console.log(calorie);
+         console.log(req.body.text);
+      }
+
+      catch (e) {
+         // Code to run if an exception occurs
+         //
+         //error="cannot find";
+
+         console.log("cannot find");
+         res.render("error",{data:req.body.text});
+      }
+  }
+  });
+    //console.log(response);
+    //var data = JSON.parse(body);
+    // var price =data.results[0].health;
+    //console.log(price);
+});
 app.get("/login",function(req,res){
   res.sendFile(__dirname+"/login1.html");
   //res.render("login");
 })
 app.get("/calorie",function(req,res){
   //res.sendFile(__dirname + "/index.html");
+  //var id =req.body.param.;
   res.render("list",{calorie:remcalorie});
 });
 //app.post()

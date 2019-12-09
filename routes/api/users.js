@@ -22,7 +22,7 @@ router.get('/:id', async(req,res) => {
        catch(error) {
            // We will be handling the error later
            console.log(error)
-       } 
+       }
 })
 
 // Get user calories by ID
@@ -36,7 +36,7 @@ router.get('/calorie/:id', async(req,res) => {
        catch(error) {
            // We will be handling the error later
            console.log(error)
-       } 
+       }
 })
 
 // Create user
@@ -57,13 +57,14 @@ router.post('/register', async (req,res) => {
  })
 
  // ???
- router.get('/login', async (req,res) => {
+ router.post('/login', async (req,res) => {
     try {
      const isValidated = validator.loginValidation(req.body)
      if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
      const userName = req.body.userName
      const password = req.body.password
      const user = await User.findOne({userName})
+     if(!user) return res.status(404).send({error: 'user does not exist'})
      if(user.password != password) return res.status(400).json({error: 'wrong password'})
      const newUser = await User.findOne({userName})
      res.json({msg:'login successful', data: newUser})
