@@ -11,3 +11,6 @@ RUN npm install
 COPY . .
 
 EXPOSE 80
+
+#run
+CMD ["node", "index.js"]
