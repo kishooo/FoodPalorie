@@ -34,6 +34,7 @@ var remcalorie=2500;
 var error="";
 var flag=0;
 var falglogin=0;
+//var myData='';
 // Direct to Route Handlers
 app.use('/api/users', users)
 app.use('/api/foods', foods)
@@ -137,7 +138,7 @@ app.post("/login",async function(req,res) {
   var myJSON = JSON.stringify(user);
   try {
         await axios.post('http://localhost:3000/api/users/login',user).then(res => {
-          res.data.msg == 'login successful' ?flogin=1: flogin=0
+          res.data.msg == 'login successful' ?/*flogin=1: flogin=0*/myData = res.data:myData=''
           // if(res.data.msg == 'Member found successfully'){
           //   console.log("login successfully");
           // }else{
@@ -148,13 +149,17 @@ app.post("/login",async function(req,res) {
        })
 
      } catch(error) {
-       flogin=0;
+       //flogin=0;
+       myData='';
      }
-  if(flogin==1){
-    res.redirect("/calorie");
-  }else{
+     console.log(myData);
+  if(myData!=""){
+     res.redirect("/calorie");
+
+  //   //console.log(res.data);
+   }else{
     res.write("<h1>password or username incorrect</h1>");
-  }
+   }
 })
 
 app.get("/login",function(req,res){
