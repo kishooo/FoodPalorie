@@ -6,3 +6,6 @@ WORKDIR /server
 COPY package*.json /server/
 
 RUN npm install
+
+#copy stuff
+COPY . .
