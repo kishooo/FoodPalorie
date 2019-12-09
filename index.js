@@ -14,6 +14,7 @@ const users = require('./routes/api/users')
 const foods = require('./routes/api/foods')
 
 const app = express();
+app.use(express.static("public"));
 app.set('view engine','ejs');
 
 // DB Config
@@ -86,7 +87,6 @@ app.post("/calorie",function(req,res){
     //console.log(response);
     //var data = JSON.parse(body);
     // var price =data.results[0].health;
-
     //console.log(price);
 });
 app.get("/register",function(req,res){
@@ -102,7 +102,7 @@ app.post("/register",async function(req,res) {
   };
   var myJSON = JSON.stringify(user);
   try {
-        await axios.post('http://localhost:3000/api/users/register',user).then(res => {
+          await axios.post('http://localhost:3000/api/users/register',user).then(res => {
           res.data.msg == 'user was created successfully' ?alert("user created") : console.log("error")
            //console.log("check point");
        })
@@ -117,7 +117,7 @@ app.post("/register",async function(req,res) {
 //     //res.redirect("/");
 //    console.log("user was created");
 // }
-app.get("/login",async function(req,res) {
+app.post("/login",async function(req,res) {
   const user = {
   "userName":req.body.userName,
   "password":req.body.password,
@@ -136,7 +136,8 @@ app.get("/login",async function(req,res) {
 })
 
 app.get("/login",function(req,res){
-  res.sendFile(__dirname+"/login.html");
+  res.sendFile(__dirname+"/login1.html");
+  //res.render("login");
 })
 app.get("/calorie",function(req,res){
   //res.sendFile(__dirname + "/index.html");
