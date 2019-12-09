@@ -16,7 +16,6 @@ const foods = require('./routes/api/foods')
 const app = express();
 app.use(express.static("public"));
 app.set('view engine','ejs');
-
 // DB Config
 const db = require('./config/keys').mongoURI
 
@@ -33,7 +32,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 var calorie=0;
 var remcalorie=2500;
 var error="";
-
+var flag=0;
 // Direct to Route Handlers
 app.use('/api/users', users)
 app.use('/api/foods', foods)
@@ -103,14 +102,25 @@ app.post("/register",async function(req,res) {
   var myJSON = JSON.stringify(user);
   try {
           await axios.post('http://localhost:3000/api/users/register',user).then(res => {
-          res.data.msg == 'user was created successfully' ?/*console.log("user created") */location.href="http://localhost:3000/api/users/register": console.log("error")
+          res.data.msg == 'user was created successfully' ?f=1: f=0
            //console.log("check point");
        })
 
      } catch(error) {
-       console.log(error);
-  }
+       //console.log(error);
+       f=0;
 
+  }
+  // if(req.body.caloriesNeeded<50){
+  //   res.write("<h1>you calorie should be greater than 50</h1>");
+  // }
+  if(f==1){
+    res.redirect("/login");
+  }else{
+    res.write("<h1>already exist/calorie is not a number</h1>");
+    console.log("error");
+
+  }
 });
 // function response(res){
 //   if(res.msg=="user was created successfully"){
