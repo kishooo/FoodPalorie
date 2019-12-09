@@ -5,8 +5,41 @@ const router = express.Router()
 const User = require('../../models/User')
 const validator = require('../../validations/userValidations')
 
-router.get('/', (req,res) => res.json({data: 'Users working'}))
+// Get all users
+router.get('/', async (req,res) => {
+    const user = await User.find()
+    res.json({data: user})
+})
 
+// Get user by ID
+router.get('/:id', async(req,res) => {
+    try {
+        const id = req.params.id
+        const member = await User.findById(id)
+        if(!member) return res.status(404).send({error: 'Member does not exist'})
+        res.json({msg: 'Member found successfully', data: member})
+       }
+       catch(error) {
+           // We will be handling the error later
+           console.log(error)
+       }
+})
+
+// Get user calories by ID
+router.get('/calorie/:id', async(req,res) => {
+    try {
+        const id = req.params.id
+        const member = await User.findById(id)
+        if(!member) return res.status(404).send({error: 'Member does not exist'})
+        res.json({caloriesNeeded: member.caloriesNeeded})
+       }
+       catch(error) {
+           // We will be handling the error later
+           console.log(error)
+       }
+})
+
+// Create user
 router.post('/register', async (req,res) => {
     try {
      const isValidated = validator.createValidation(req.body)
@@ -20,16 +53,18 @@ router.post('/register', async (req,res) => {
     catch(error) {
         // We will be handling the error later
         console.log(error)
-    }  
+    }
  })
 
- router.get('/login', async (req,res) => {
+ // ???
+ router.post('/login', async (req,res) => {
     try {
      const isValidated = validator.loginValidation(req.body)
      if (isValidated.error) return res.status(400).send({ error: isValidated.error.details[0].message })
      const userName = req.body.userName
      const password = req.body.password
      const user = await User.findOne({userName})
+     if(!user) return res.status(404).send({error: 'user does not exist'})
      if(user.password != password) return res.status(400).json({error: 'wrong password'})
      const newUser = await User.findOne({userName})
      res.json({msg:'login successful', data: newUser})
@@ -37,7 +72,7 @@ router.post('/register', async (req,res) => {
     catch(error) {
         // We will be handling the error later
         console.log(error)
-    }  
+    }
  })
 
  /* router.put('/addFood', async (req,res) => {
@@ -55,7 +90,7 @@ router.post('/register', async (req,res) => {
     catch(error) {
         // We will be handling the error later
         console.log(error)
-    }  
+    }
  })
  */
 /*

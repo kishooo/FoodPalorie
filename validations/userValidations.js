@@ -5,7 +5,7 @@ module.exports = {
         const createSchema = {
             userName: Joi.string().min(3).max(500).required(),
             password: Joi.string().min(3).max(100).required(),
-            caloriesNeeded: Joi.number().min(50).max(3000),
+            caloriesNeeded: Joi.number(),
         }
 
         return Joi.validate(request, createSchema)
@@ -15,7 +15,7 @@ module.exports = {
         const createSchema = {
             userName: Joi.string().min(3).max(500).required(),
             password: Joi.string().min(3).max(100).required(),
-            caloriesNeeded: Joi.number().min(50).max(3000),
+            caloriesNeeded: Joi.number(),
         }
 
         return Joi.validate(request, createSchema)
@@ -24,8 +24,8 @@ module.exports = {
         const createSchema = {
             userName: Joi.string().min(3).max(500),
             password: Joi.string().min(3).max(100),
-            caloriesNeeded: Joi.number().min(50).max(3000),
-        
+            caloriesNeeded: Joi.number(),
+
         }
 
         return Joi.validate(request, createSchema)
