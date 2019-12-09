@@ -41,7 +41,9 @@ app.use('/api/foods', foods)
 //app.use((req,res) => res.status(404).send(`<h1>Can not find what you're looking for</h1>`))
 
 app.get("/",function(req,res){
-  res.sendFile(__dirname + "/index.html");
+  //res.sendFile(__dirname + "/index.html");
+  //res.sendFile(__dirname+"/login1.html");
+  res.redirect("/login");
   //res.render("list",{calorie:remcalorie});
 });
 
@@ -67,7 +69,6 @@ app.post("/calorie",function(req,res){
     else{
     try {
       calorie=data.hints[0].food.nutrients.ENERC_KCAL;
-
          remcalorie=remcalorie-calorie;
          res.render("list",{calorie:remcalorie});
        	console.log(calorie);
