@@ -95,7 +95,6 @@ app.get("/register",function(req,res){
 });
 
 app.post("/register",async function(req,res) {
-
   const user = {
   "userName":req.body.userName,
   "password":req.body.password,
@@ -104,7 +103,7 @@ app.post("/register",async function(req,res) {
   var myJSON = JSON.stringify(user);
   try {
           await axios.post('http://localhost:3000/api/users/register',user).then(res => {
-          res.data.msg == 'user was created successfully' ?alert("user created") : console.log("error")
+          res.data.msg == 'user was created successfully' ?/*console.log("user created") */location.href="http://localhost:3000/api/users/register": console.log("error")
            //console.log("check point");
        })
 
@@ -127,7 +126,13 @@ app.post("/login",async function(req,res) {
   var myJSON = JSON.stringify(user);
   try {
         await axios.get('http://localhost:3000/api/users/login',user).then(res => {
-          res.data.msg == 'Member found successfully' ?console.log("login successfully") : console.log("error")
+          res.data.msg == 'Member found successfully' ? axios.get('http://localhost:3000/calorie'): console.log("error")
+          // if(res.data.msg == 'Member found successfully'){
+          //   console.log("login successfully");
+          // }else{
+          //   console.log("error");
+          // }
+          //axios.get('https://api.github.com/users/mapbox%27)
            //console.log("check point");
        })
 
